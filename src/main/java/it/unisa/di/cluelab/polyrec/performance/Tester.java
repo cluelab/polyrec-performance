@@ -59,7 +59,6 @@ public class Tester {
     private int totTests;
     private long time;
     private File outfile;
-    private boolean rInvariant;
 
     /**
      * Constructor of the recognizer.
@@ -71,7 +70,6 @@ public class Tester {
      */
     public Tester(boolean method2, String dir, boolean fullName, int trainingN, File file) {
 
-        this.rInvariant = method2;
         outfile = file;
         store = new GestureStore();
 
@@ -82,6 +80,7 @@ public class Tester {
         for (int i = 0; i < files.size(); i++) {
             final FileImporter fi = new FileImporter(files.get(i));
             final Gesture gesture = fi.importInfo(fullName);
+            gesture.setRotInv(method2);
             int type = GestureStore.TYPE_ANY;
             if (trainingN >= 0) {
                 if (gesture.getInfo().getNumber() <= trainingN) {
@@ -116,7 +115,7 @@ public class Tester {
 
         // perform i-th test
         for (int i = 0; i < numTests; i++) {
-            final Recognizer recognizer = new PolyRecognizerGSS(rInvariant);
+            final Recognizer recognizer = new PolyRecognizerGSS();
             methodDes = recognizer.getMethod();
 
             // init templates
